@@ -36,8 +36,8 @@ def Inserir_Contato(nome, telefone, email):
 def Update_Contato(id_contato, nome=None, telefone=None, email=None):
     conn = Conectar()
     cursor = conn.cursor()
-    if id_contato != None:
-        if nome != None:
+    if type(id_contato) != None:
+        if type(nome) != None:
             cursor.execute("""
                 UPDATE Agenda SET Nome = ? WHERE id = ?
             """, (nome, id_contato))
@@ -59,7 +59,7 @@ def Deletar_Contato(id_contato):
     conn = Conectar()
     cursor = conn.cursor()
 
-    if (id_contato != None) and (id_contato.strip() != ''):
+    if (type(id_contato) != None) and (id_contato.strip() != ''):
         cursor.execute(f"""
             DELETE FROM Agenda WHERE ID == {id_contato}
         """)
@@ -73,14 +73,14 @@ def Selecionar_Contato(id_contato=None, nome=None):
     conn = Conectar()
     cursor = conn.cursor()
 
-    if (id_contato != None) and (nome != None):
+    if (type(id_contato) != None) and (type(nome) != None):
         cursor.execute("""
             SELECT * FROM Agenda
         """)
         result = cursor.fetchall()
         conn.close()
         return result
-    elif nome != None:
+    elif type(nome) != None:
         cursor.execute("""
             SELECT * FROM Agenda WHERE nome = ?
         """, (nome))
