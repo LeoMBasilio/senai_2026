@@ -38,3 +38,9 @@ e = Estagiario("Pedro", 1200, "Ciência da Computação")
 
 g.apresentar()
 print(g.calcular_bonus())  # 1600.0
+
+f.apresentar()
+print(f.calcular_bonus())
+
+e.apresentar()
+print(e.calcular_bonus())

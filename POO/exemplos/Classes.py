@@ -19,3 +19,5 @@ carro2 = Carro("Civic", "preto")
 
 carro1.ligar()       # Gol está ligado!
 carro2.descrever()   # Civic preto — desligado
+
+carro1.modelo = 'fusca'

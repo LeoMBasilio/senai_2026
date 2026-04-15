@@ -1,0 +1,93 @@
+# =======================
+# Ambientes Virtuais
+# =======================
+.venv/
+venv/
+env/
+ENV/
+.env/
+
+# =======================
+# Variáveis de Ambiente
+# =======================
+.env
+.env.*
+!.env.example
+
+# =======================
+# Bytecode e Cache Python
+# =======================
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+
+# =======================
+# Distribuição / Build
+# =======================
+dist/
+build/
+*.egg-info/
+*.egg
+MANIFEST
+.eggs/
+
+# =======================
+# Pytest / Cobertura
+# =======================
+.pytest_cache/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+*.coveragerc
+
+# =======================
+# Ferramentas de Qualidade
+# =======================
+.mypy_cache/
+.ruff_cache/
+.pylint.d/
+
+# =======================
+# Jupyter Notebook
+# =======================
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# =======================
+# Banco de Dados Local
+# =======================
+*.sqlite3
+*.db
+
+# =======================
+# Logs
+# =======================
+*.log
+logs/
+
+# =======================
+# IDEs e Editores
+# =======================
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# =======================
+# Sistema Operacional
+# =======================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# =======================
+# Arquivos Temporários
+# =======================
+*.tmp
+*.bak
+*.swp
