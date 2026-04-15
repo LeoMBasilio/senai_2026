@@ -232,4 +232,4 @@ if __name__ == '__main__':
                     break
 
                 case _:
-                    console.print('[red]Opção inválida. Tente novamente.[/]')
+                    console.print('[red]Opção inválida. Tente novamente.[/]') 
