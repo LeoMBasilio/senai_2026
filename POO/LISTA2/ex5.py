@@ -8,7 +8,7 @@ from sqlalchemy.orm import DeclarativeBase, Session, Mapped, mapped_column, rela
 
 
 class Banco:
-    def __init__(self, url):
+    def __init__(self, url: str):
         self.engine = create_engine(url)
 
     def get_engine(self):
@@ -35,7 +35,12 @@ class Pedido(Base):
 
     def calcular_total(self) -> float:
         return sum(item.quantidade * item.produto.preco for item in self.itens)
-
+    
+        # O MESMO CÓDIGO DE CIMA, MAS COM MAIS LINHAS PARA FICAR MAIS LEGÍVEL
+        # for item in self.itens:
+        #     subtotal = item.quantidade * item.produto.preco
+        #     total += subtotal
+        #     return total
 
 class ItemPedido(Base):
     __tablename__ = 'itens_pedido'
