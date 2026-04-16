@@ -34,8 +34,9 @@ class Pedido(Base):
     itens: Mapped[list['ItemPedido']] = relationship(back_populates='pedido')
 
     def calcular_total(self) -> float:
+        #Lista compreensiva para calcular o total do pedido
         return sum(item.quantidade * item.produto.preco for item in self.itens)
-    
+        
         # O MESMO CÓDIGO DE CIMA, MAS COM MAIS LINHAS PARA FICAR MAIS LEGÍVEL
         # for item in self.itens:
         #     subtotal = item.quantidade * item.produto.preco

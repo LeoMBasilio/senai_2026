@@ -30,6 +30,11 @@ class Produto(Base):
         self.set_estoque(estoque)
 
     def set_preco(self, preco):
+
+        # if ternaria para validar o preço
+        #o mesmo qeue o código abaixo, mas em uma linha só
+        # self.preco = preco if preco >= 0 else ValueError("Preço não pode ser negativo.")
+
         if preco < 0:
             raise ValueError("Preço não pode ser negativo.")
         self.preco = preco
