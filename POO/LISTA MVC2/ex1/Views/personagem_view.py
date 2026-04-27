@@ -1,0 +1,31 @@
+from Models.personagem import Personagem
+
+
+def exibir_personagem(p: Personagem):
+    print(f"  [{p.tipo.upper()}] {p.nome} | HP: {p.hp}/{p.hp_max} | Nível: {p.nivel}")
+
+
+def exibir_lista(personagens: list[Personagem]):
+    print("\n=== Personagens ===")
+    for p in personagens:
+        exibir_personagem(p)
+
+
+def exibir_rodada(rodada: dict):
+    critico_txt = " *** CRÍTICO! ***" if rodada["critico"] else ""
+    print(
+        f"  Rodada {rodada['rodada']:>2}: {rodada['atacante']:<15} ataca {rodada['defensor']:<15}"
+        f" | Dano: {rodada['dano']:>4}{critico_txt}"
+        f" | HP restante de {rodada['defensor']}: {rodada['hp_restante']}"
+    )
+
+
+def exibir_batalha(rodadas: list[dict], vencedor: Personagem, perdedor: Personagem):
+    print(f"\n{'='*60}")
+    print(f"  BATALHA: {rodadas[0]['atacante']} vs {rodadas[0]['defensor']}")
+    print(f"{'='*60}")
+    for r in rodadas:
+        exibir_rodada(r)
+    print(f"\n  VENCEDOR: {vencedor.nome} ({vencedor.tipo}) com {vencedor.hp} HP restante!")
+    print(f"  {perdedor.nome} foi derrotado após {len(rodadas)} rodadas.")
+    print(f"{'='*60}\n")

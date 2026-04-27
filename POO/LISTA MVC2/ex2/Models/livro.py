@@ -1,0 +1,18 @@
+from sqlalchemy import Column, Integer, String, Boolean
+from sqlalchemy.orm import relationship
+from Models.base import Base
+
+
+class Livro(Base):
+    __tablename__ = "livros"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    titulo = Column(String(200), nullable=False)
+    autor = Column(String(150), nullable=False)
+    disponivel = Column(Boolean, default=True, nullable=False)
+
+    emprestimos = relationship("Emprestimo", back_populates="livro")
+
+    def __repr__(self):
+        status = "disponivel" if self.disponivel else "emprestado"
+        return f"Livro(id={self.id}, titulo={self.titulo!r}, status={status})"
