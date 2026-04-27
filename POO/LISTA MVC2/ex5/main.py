@@ -14,6 +14,7 @@ from Views.filme_view import exibir_catalogo, exibir_avaliacoes_filme, exibir_ra
 
 inicializar()
 
+# Cadastra quatro filmes de diferentes gêneros e épocas para um ranking variado.
 f1 = cadastrar_filme("Matrix", 1999, "Ficcao Cientifica", "Wachowski")
 f2 = cadastrar_filme("O Poderoso Chefao", 1972, "Drama", "Francis Ford Coppola")
 f3 = cadastrar_filme("Parasita", 2019, "Thriller", "Bong Joon-ho")
@@ -23,9 +24,10 @@ u1 = cadastrar_usuario("Pedro Alves", "pedro@email.com")
 u2 = cadastrar_usuario("Fernanda Costa", "fernanda@email.com")
 u3 = cadastrar_usuario("Ricardo Melo", "ricardo@email.com")
 
+# Cada usuário avalia filmes diferentes — um usuário pode avaliar o mesmo filme uma vez.
 avaliar(u1.id, f1.id, 9.5, "Revolucionario para a epoca!")
 avaliar(u2.id, f1.id, 8.0, "Classico, mas o CGI envelheceu.")
-avaliar(u3.id, f1.id, 9.0)
+avaliar(u3.id, f1.id, 9.0)  # sem comentário — só nota
 
 avaliar(u1.id, f2.id, 10.0, "Obra-prima absoluta.")
 avaliar(u2.id, f2.id, 9.5, "Perfeito em todos os aspectos.")
@@ -39,9 +41,11 @@ avaliar(u1.id, f4.id, 7.5, "Bonito, mas complexo demais.")
 
 exibir_catalogo(listar_filmes())
 
+# Exibe as avaliações individuais de cada filme com a média calculada.
 for f in [f1, f2, f3, f4]:
     media = media_notas(f.id)
     avaliacoes = listar_avaliacoes_filme(f.id)
     exibir_avaliacoes_filme(f, avaliacoes, media)
 
+# Ranking geral: filmes ordenados da maior para a menor média.
 exibir_ranking(ranking_filmes())

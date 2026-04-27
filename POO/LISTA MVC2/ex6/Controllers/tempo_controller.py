@@ -1,3 +1,11 @@
+# Controllers/tempo_controller.py — camada de lógica do ex6 (viagem no tempo)
+# A operação mais complexa é viajar_no_tempo():
+#   1. Cria um registro de Viagem apontando para o evento a ser alterado.
+#   2. Cria uma nova LinhaTempo divergente vinculada a essa viagem.
+#   3. Copia para a nova linha todos os eventos anteriores ao alterado.
+#   4. Adiciona o evento com a descrição modificada na nova linha.
+# Resultado: a linha original permanece intacta; a nova linha tem o evento modificado.
+
 from Models.base import Base, banco, session
 from Models.viajante import Viajante
 from Models.linha_tempo import LinhaTempo
@@ -68,6 +76,7 @@ def viajar_no_tempo(viajante_id: int, evento_id: int, alteracao: str, nome_nova_
 
         lt_original = s.get(LinhaTempo, evento_original.linha_tempo_id)
 
+        # Passo 1: registra a viagem — flush() obtém o id sem fazer commit ainda.
         viagem = Viagem(
             viajante_id=viajante_id,
             evento_id=evento_id,
@@ -75,8 +84,9 @@ def viajar_no_tempo(viajante_id: int, evento_id: int, alteracao: str, nome_nova_
             alteracao=alteracao,
         )
         s.add(viagem)
-        s.flush()
+        s.flush()  # envia o INSERT ao banco mas mantém a transação aberta para usar viagem.id
 
+        # Passo 2: cria a nova linha do tempo divergente vinculada a esta viagem.
         nova_lt = LinhaTempo(
             nome=nome_nova_linha,
             descricao=f"Divergencia da linha '{lt_original.nome}' em {evento_original.ano}",
@@ -84,20 +94,24 @@ def viajar_no_tempo(viajante_id: int, evento_id: int, alteracao: str, nome_nova_
             origem_viagem_id=viagem.id,
         )
         s.add(nova_lt)
-        s.flush()
+        s.flush()  # obtém nova_lt.id para usar nos eventos abaixo
 
+        # Passo 3: copia os eventos anteriores ao ponto de divergência para a nova linha.
+        # Esses eventos são idênticos nas duas linhas — a divergência começa no evento alterado.
         eventos_anteriores = (
             s.query(Evento)
             .filter(
                 Evento.linha_tempo_id == lt_original.id,
                 Evento.ano <= evento_original.ano,
-                Evento.id != evento_original.id,
+                Evento.id != evento_original.id,  # exclui o evento a ser substituído
             )
             .all()
         )
         for ev in eventos_anteriores:
             s.add(Evento(descricao=ev.descricao, ano=ev.ano, linha_tempo_id=nova_lt.id))
 
+        # Passo 4: adiciona o evento alterado na nova linha com a nova descrição.
+        # descricao_original preserva o texto anterior para comparação no relatório.
         s.add(Evento(
             descricao=alteracao,
             ano=evento_original.ano,
@@ -128,6 +142,7 @@ def listar_linhas_tempo() -> list[LinhaTempo]:
 def eventos_da_linha(linha_tempo_id: int) -> list[Evento]:
     s = session()
     try:
+        # order_by(Evento.ano) ordena cronologicamente — mais legível na exibição.
         return s.query(Evento).filter(Evento.linha_tempo_id == linha_tempo_id).order_by(Evento.ano).all()
     finally:
         s.close()

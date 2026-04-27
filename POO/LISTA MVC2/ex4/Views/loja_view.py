@@ -1,7 +1,12 @@
+# Views/loja_view.py — camada de apresentação do ex4 (loja e-commerce)
+# Exibe catálogo, itens de pedido e lista de pedidos formatados.
+# Importa de Models.models (arquivo consolidado) — ver models.py do ex4.
+
 from Models.models import Produto, Pedido, ItemPedido
 
 
 def exibir_produto(p: Produto):
+    # :<30 e :>8 alinham colunas — deixam o catálogo visualmente organizado.
     print(f"  [{p.id}] {p.nome:<30} | R$ {p.preco:>8.2f} | Estoque: {p.estoque}")
 
 
@@ -16,6 +21,7 @@ def exibir_catalogo(produtos: list[Produto]):
 
 
 def exibir_item(item: ItemPedido):
+    # Exibe quantidade, produto, preço unitário e subtotal por linha.
     print(f"    - {item.quantidade}x item #{item.produto_id} @ R${item.preco_unitario:.2f} = R${item.subtotal:.2f}")
 
 

@@ -1,3 +1,5 @@
+# Models/usuario.py — representa o avaliador de filmes
+
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
 from Models.base import Base
@@ -10,6 +12,7 @@ class Usuario(Base):
     nome = Column(String(100), nullable=False)
     email = Column(String(150), nullable=False, unique=True)
 
+    # Um usuário pode fazer várias avaliações (1:N com Avaliacao).
     avaliacoes = relationship("Avaliacao", back_populates="usuario")
 
     def __repr__(self):

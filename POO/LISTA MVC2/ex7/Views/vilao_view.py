@@ -1,6 +1,11 @@
+# Views/vilao_view.py — camada de apresentação do ex7 (sistema de vilões)
+# Exibe fichas de vilões, resultados de crimes e o ranking de poder mundial.
+# Importa de Models.models (arquivo consolidado) — ver models.py do ex7.
+
 from Models.models import Vilao, Capanga, Crime, DominioCriminal
 
 
+# Dict de ícones para cada status de crime — facilita leitura visual no terminal.
 STATUS_ICONE = {
     "planejado": "[PLAN]",
     "em_execucao": "[EXEC]",
@@ -10,6 +15,7 @@ STATUS_ICONE = {
 
 
 def exibir_vilao(v: Vilao):
+    # Exibe o codinome entre aspas apenas se existir.
     codinome = f' aka "{v.codinome}"' if v.codinome else ""
     print(f"  [{v.id}] {v.nome}{codinome} | Poder Mundial: {v.poder_mundial}")
 
@@ -53,6 +59,7 @@ def exibir_ranking(viloes: list[Vilao]):
     print("=" * 55)
     for pos, v in enumerate(viloes, 1):
         codinome = f' ({v.codinome})' if v.codinome else ""
+        # Barra visual de progresso: 1 "#" a cada 5 pontos de poder.
         barra = "#" * (v.poder_mundial // 5) if v.poder_mundial > 0 else "-"
         print(f"  {pos}. {v.nome}{codinome:<20} | {v.poder_mundial:>4} pts {barra}")
     print("=" * 55)

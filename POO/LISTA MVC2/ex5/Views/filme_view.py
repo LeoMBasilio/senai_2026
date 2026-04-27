@@ -1,7 +1,13 @@
+# Views/filme_view.py — camada de apresentação do ex5 (avaliação de filmes)
+# Converte notas numéricas em representações visuais de estrelas.
+
 from Models.models import Filme, Avaliacao
 
 
 def estrelas(nota: float) -> str:
+    # Converte nota de 0-10 para 0-5 estrelas (divisão por 2).
+    # int() trunca o resultado — nota 9.5 vira 4 estrelas cheias, não 5.
+    # "." representa meia estrela/estrela vazia para completar as 5 posições.
     cheia = int(nota / 2)
     return "*" * cheia + "." * (5 - cheia)
 
@@ -20,6 +26,7 @@ def exibir_catalogo(filmes: list[Filme]):
 def exibir_avaliacao(av: Avaliacao):
     print(f"    Usuário #{av.usuario_id}: {av.nota:.1f}/10 {estrelas(av.nota)}")
     if av.comentario:
+        # Aspas duplas ao redor do comentário indicam que é uma citação do usuário.
         print(f"      \"{av.comentario}\"")
 
 
@@ -36,6 +43,7 @@ def exibir_ranking(ranking: list[tuple]):
     print("\n=== Ranking de Filmes ===")
     print(f"  {'#':<3} {'Título':<35} {'Média':>6} {'Avaliações':>12}")
     print("  " + "-" * 60)
+    # enumerate(ranking, 1) numera a posição a partir de 1 (não 0).
     for pos, (filme, media, total) in enumerate(ranking, 1):
         media_str = f"{media:.1f}" if media else "N/A"
         print(f"  {pos:<3} {filme.titulo:<35} {media_str:>6} {int(total or 0):>12}")

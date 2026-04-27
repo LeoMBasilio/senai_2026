@@ -1,3 +1,5 @@
+# Models/base.py — configuração de banco do ex3 (gerenciador de tarefas)
+
 import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import DeclarativeBase, sessionmaker

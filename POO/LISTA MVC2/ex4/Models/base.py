@@ -1,3 +1,5 @@
+# Models/base.py — configuração de banco do ex4 (loja e-commerce)
+
 import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import DeclarativeBase, sessionmaker

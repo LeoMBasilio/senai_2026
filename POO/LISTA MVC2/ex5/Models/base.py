@@ -1,3 +1,5 @@
+# Models/base.py — configuração de banco do ex5 (avaliação de filmes)
+
 import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import DeclarativeBase, sessionmaker

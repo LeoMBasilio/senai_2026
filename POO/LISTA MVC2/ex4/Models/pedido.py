@@ -1,3 +1,7 @@
+# Models/pedido.py — representa um pedido de compra
+# O total é calculado e acumulado no Controller a cada item adicionado.
+# O status controla o ciclo de vida do pedido.
+
 from sqlalchemy import Column, Integer, Float, Enum, ForeignKey, DateTime
 from sqlalchemy.orm import relationship
 from datetime import datetime
@@ -10,7 +14,11 @@ class Pedido(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     usuario_id = Column(Integer, ForeignKey("usuarios.id"), nullable=False)
+
+    # Pedido começa como ABERTO — permite adicionar itens antes de confirmar.
     status = Column(Enum(StatusPedido), default=StatusPedido.ABERTO, nullable=False)
+
+    # total é atualizado pelo Controller a cada item adicionado.
     total = Column(Float, default=0.0, nullable=False)
     criado_em = Column(DateTime, default=datetime.now)
 

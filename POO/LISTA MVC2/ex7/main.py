@@ -15,10 +15,12 @@ from Views.vilao_view import exibir_ficha_vilao, exibir_resultado_crime, exibir_
 
 inicializar()
 
+# Cria três vilões icônicos com seus codinomes.
 joker = criar_vilao("Arthur Fleck", "Joker")
 thanos = criar_vilao("Thanos", "O Tita Louco")
 magneto = criar_vilao("Max Eisenhardt", "Magneto")
 
+# Contrata capangas — Thanos tem 3, os outros têm menos, o que afeta a chance de sucesso.
 contratar_capanga(joker.id, "Arlequina", "Acrobacia e Caos")
 contratar_capanga(joker.id, "Pinguim", "Estrategia e Corrupcao")
 contratar_capanga(thanos.id, "Gamora", "Combate e Assassinato")
@@ -26,21 +28,26 @@ contratar_capanga(thanos.id, "Ebony Maw", "Telecinese e Tortura")
 contratar_capanga(thanos.id, "Corvus Glaive", "Estrategia Militar")
 contratar_capanga(magneto.id, "Pyro", "Controle do Fogo")
 
+# Planeja crimes com diferentes recompensas de poder.
 c1 = planejar_crime(joker.id, "Assalto ao Banco de Gotham", "Roubar as reservas de ouro", 15)
 c2 = planejar_crime(joker.id, "Envenenar o suprimento de agua", "Caos na cidade", 25)
 c3 = planejar_crime(thanos.id, "Reunir as Joias do Infinito", "Coletar todas as 6 joias", 50)
 c4 = planejar_crime(thanos.id, "Estalar os dedos", "Eliminar 50% do universo", 100)
 c5 = planejar_crime(magneto.id, "Inverter os polos magneticos", "Destruir a grade eletrica global", 40)
 
+# Executa todos os crimes — o resultado é aleatório (depende do número de capangas).
 for crime_id in [c1.id, c2.id, c3.id, c4.id, c5.id]:
     crime, sucesso = executar_crime(crime_id)
     exibir_resultado_crime(crime, sucesso)
 
+# Conquista territorial bônus — independe dos crimes, garante poder extra.
 conquistar_territorio(thanos.id, "O Universo Inteiro")
 conquistar_territorio(magneto.id, "Ilha Genosha")
 
+# Exibe a ficha completa de cada vilão: capangas e histórico de crimes.
 for v_id in [joker.id, thanos.id, magneto.id]:
     v = buscar_vilao(v_id)
     exibir_ficha_vilao(v, listar_capangas(v_id), listar_crimes(v_id))
 
+# Ranking final com barra visual de poder.
 exibir_ranking(ranking_viloes())

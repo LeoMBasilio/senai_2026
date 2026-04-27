@@ -1,3 +1,10 @@
+# Controllers/vilao_controller.py — camada de lógica do ex7 (sistema de vilões)
+# Mecânica de sucesso em executar_crime():
+#   - Chance base: 70%
+#   - Cada capanga adiciona +5% (até no máximo 95%)
+#   - Sucesso: status CONCLUIDO, vilão ganha poder, domínio cresce.
+#   - Falha: status FALHOU, vilão perde metade da recompensa em poder.
+
 import random
 from datetime import datetime
 from Models.base import Base, banco, session
@@ -17,7 +24,10 @@ def criar_vilao(nome: str, codinome: str = "") -> Vilao:
     try:
         v = Vilao(nome=nome, codinome=codinome)
         s.add(v)
+        # flush() obtém o id do vilão sem commitar — necessário para criar o DominioCriminal
+        # na mesma transação usando o id recém-gerado.
         s.flush()
+        # Todo vilão começa com um DominioCriminal padrão (Esconderijo Secreto).
         s.add(DominioCriminal(vilao_id=v.id))
         s.commit()
         s.refresh(v)
@@ -70,7 +80,10 @@ def executar_crime(crime_id: int) -> tuple[Crime, bool]:
         if crime.status != StatusCrime.PLANEJADO:
             raise ValueError("So e possivel executar crimes planejados.")
 
+        # Conta capangas do vilão — mais capangas = maior chance de sucesso.
         num_capangas = s.query(Capanga).filter(Capanga.vilao_id == crime.vilao_id).count()
+
+        # Fórmula: 70% base + 5% por capanga, limitado a 95% (sempre há risco).
         sucesso = random.random() < min(0.95, 0.70 + num_capangas * 0.05)
 
         vilao = s.get(Vilao, crime.vilao_id)
@@ -80,9 +93,11 @@ def executar_crime(crime_id: int) -> tuple[Crime, bool]:
             crime.status = StatusCrime.CONCLUIDO
             vilao.poder_mundial += crime.recompensa_poder
             if dominio:
+                # Crimes bem-sucedidos expandem o domínio em 1.5x a recompensa de poder.
                 dominio.pontos_dominio += crime.recompensa_poder * 1.5
         else:
             crime.status = StatusCrime.FALHOU
+            # Penalidade: perde metade da recompensa, nunca abaixo de 0.
             vilao.poder_mundial = max(0, vilao.poder_mundial - crime.recompensa_poder // 2)
 
         crime.executado_em = datetime.now()
@@ -102,6 +117,7 @@ def conquistar_territorio(vilao_id: int, territorio: str):
         dominio = s.query(DominioCriminal).filter(DominioCriminal.vilao_id == vilao_id).first()
         if dominio is None:
             raise ValueError("Vilao sem dominio registrado.")
+        # Conquista concede +50 pontos de domínio e +20 de poder mundial.
         dominio.territorio = territorio
         dominio.pontos_dominio += 50
         vilao = s.get(Vilao, vilao_id)
@@ -117,6 +133,7 @@ def conquistar_territorio(vilao_id: int, territorio: str):
 def ranking_viloes() -> list[Vilao]:
     s = session()
     try:
+        # Ordena do mais poderoso para o menos — ranking decrescente.
         return s.query(Vilao).order_by(Vilao.poder_mundial.desc()).all()
     finally:
         s.close()

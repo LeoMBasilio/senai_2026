@@ -1,3 +1,7 @@
+# Views/biblioteca_view.py — camada de apresentação do ex2 (biblioteca)
+# Formata livros, empréstimos e devoluções para o terminal.
+# Nota: importa de Models.models (arquivo consolidado) em vez dos arquivos individuais.
+
 from Models.models import Livro, Emprestimo, Usuario
 
 
@@ -15,6 +19,7 @@ def exibir_livros_disponiveis(livros: list[Livro]):
 
 
 def exibir_emprestimo(emp: Emprestimo):
+    # strftime formata a data para exibição legível — o banco armazena como objeto datetime.
     devolucao = emp.data_devolucao.strftime("%d/%m/%Y %H:%M") if emp.data_devolucao else "em aberto"
     print(
         f"  Empréstimo #{emp.id} | Livro: {emp.livro_id} | Usuário: {emp.usuario_id}"
