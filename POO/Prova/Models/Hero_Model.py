@@ -15,7 +15,7 @@ class Heroi(Base):
         while self.pontos_experiencia >= self.nivel * 100:
             self.pontos_experiencia -= self.nivel * 100
             self.nivel += 1
-            
+
     def ganhar_experiencia(self, xp):
         self.pontos_experiencia += xp
         self.subi_nivel()
