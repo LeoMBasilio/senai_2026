@@ -1,23 +1,26 @@
 """
-URL configuration for loja_api project.
+urls.py (raiz do projeto) — Roteador principal da aplicação.
 
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/6.0/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+Este arquivo é o "porteiro" da API: toda URL que chega no servidor
+passa por aqui primeiro. Ele não processa as requisições diretamente,
+apenas delega para os arquivos de URLs de cada app.
+
+Analogia: é como um shopping center — este arquivo é a entrada principal,
+e cada loja (app) tem seu próprio corredor de URLs interno.
 """
+
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include  # include() encaminha para outro arquivo de URLs
 
 urlpatterns = [
+    # Painel de administração do Django — gerado automaticamente.
+    # Acesse em: http://localhost:8000/admin/
+    # Permite criar, editar e deletar qualquer dado do banco via interface web.
     path('admin/', admin.site.urls),
+
+    # Todas as URLs que começam com "api/" são encaminhadas para produtos/urls.py.
+    # Exemplo: /api/produtos/ → produtos/urls.py processa o restante (/produtos/)
+    # Usar o prefixo "api/" é uma convenção para separar a API de outras rotas
+    # (ex: frontend, documentação, etc.)
     path('api/', include('produtos.urls')),
 ]
