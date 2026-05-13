@@ -23,4 +23,9 @@ urlpatterns = [
     # Usar o prefixo "api/" é uma convenção para separar a API de outras rotas
     # (ex: frontend, documentação, etc.)
     path('api/', include('produtos.urls')),
+
+    # Botões "Log in" e "Log out" da interface web do DRF.
+    # Sem esta linha o botão aparece mas ao clicar dá erro 404.
+    # O prefixo 'api-auth/' é apenas uma convenção — pode ser qualquer um.
+    path('api-auth/', include('rest_framework.urls')),
 ]

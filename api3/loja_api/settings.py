@@ -154,10 +154,17 @@ STATIC_URL = 'static/'   # URL base para arquivos estáticos
 
 REST_FRAMEWORK = {
     # Como o DRF identifica o usuário na requisição.
-    # JWTAuthentication lê o header: Authorization: Bearer <token>
-    # Se o token for válido, request.user é preenchido com o usuário do banco.
+    # Dois métodos em paralelo — o DRF tenta cada um na ordem:
+    #   1. JWTAuthentication: lê o header Authorization: Bearer <token>
+    #      → usado por Postman, frontends, aplicações externas
+    #   2. SessionAuthentication: lê o cookie de sessão do navegador
+    #      → habilita o botão "Log in" da interface web do DRF
+    #      → ao fazer login no /admin/ ou na tela de login do DRF,
+    #        a sessão é criada e todos os endpoints passam a funcionar
+    #        diretamente no navegador, sem precisar copiar tokens.
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
     ),
 
     # Permissão padrão para todos os endpoints:
